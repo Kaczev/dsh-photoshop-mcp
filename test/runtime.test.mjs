@@ -21,6 +21,11 @@ test('isolated loading, late discovery, reconnect, new agents and disposal',asyn
   assert.equal(await r.get(0,'mcp__photoshop__photoshop_app').execute(),'second');
   await r.get(0,'photoshop_load_tools').execute({groups:['layers']});
   assert.ok(r.names(0).includes('mcp__photoshop__photoshop_create_layer'));
+  await r.get(0,'photoshop_load_tools').execute({groups:['core'],mode:'replace'});
+  assert.ok(!r.names(0).includes('mcp__photoshop__photoshop_create_layer'));
+  await r.get(0,'photoshop_load_tools').execute({groups:[],mode:'replace'});
+  assert.deepEqual(r.names(0),['photoshop_load_tools']);
+  assert.deepEqual(r.names(1),['photoshop_load_tools']);
   const scope=createScope(r.ctx,{});r.scopes.push(scope);await r.ctx.serial('agent/created',{agent:{ctx:scope.ctx}});
   assert.deepEqual(r.ctx.tools.schemas(scopeOf(scope.ctx)).map(t=>t.name),['photoshop_load_tools']);
   await owner.dispose();assert.ok(r.names(1).includes('mcp__photoshop__photoshop_app'));assert.ok(!r.names(0).includes('photoshop_load_tools'));

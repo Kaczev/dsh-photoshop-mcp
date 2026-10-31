@@ -28,6 +28,6 @@ SOFTWARE.
 
 ## Package artwork
 
-`assets/icon.png` was generated for this project using Krea 2 Turbo through the user's local ComfyUI. Settings: 1024 × 1024, seed 6410827, 8 steps, CFG 1, er_sde sampler, simple scheduler, no LoRA. The image depicts a blue whale and image-editing motifs; it does not use the Photoshop logo. The original generated image is retained for provenance but excluded from the package archive.
+`assets/icon.png` was generated for this project using Krea 2 Turbo through the user's local ComfyUI. Settings: 1024 × 1024, seed 6410827, 8 steps, CFG 1, er_sde sampler, simple scheduler, no LoRA. The image depicts a blue whale and image-editing motifs; it does not use the Photoshop logo. The distributed PNG was resized to 256 × 256 in Photoshop to meet DSH's 256 KiB icon limit. The original generated image is retained for provenance but excluded from the package archive.
 
 Adobe and Photoshop are trademarks of Adobe. This package is an independent integration and is not endorsed by Adobe.

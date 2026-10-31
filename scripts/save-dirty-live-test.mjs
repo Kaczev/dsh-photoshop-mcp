@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';import {Client} from '@modelcontextprotocol/sdk/client/index.js';import {StdioClientTransport} from '@modelcontextprotocol/sdk/client/stdio.js';import path from 'node:path';import {mkdir,stat} from 'node:fs/promises';
+const client=new Client({name:'save-dirty-live',version:'1'},{capabilities:{}});const transport=new StdioClientTransport({command:process.execPath,args:['server/index.mjs'],stderr:'pipe',env:{...process.env,ELECTRON_RUN_AS_NODE:'1'}});let logs='';transport.stderr?.on('data',data=>logs+=data);await client.connect(transport);const directory=path.resolve('.tmp/save-dirty');await mkdir(directory,{recursive:true});let id;
+async function call(name,args={}){const result=await client.callTool({name,arguments:args},undefined,{timeout:150000});assert.ok(!result.isError,JSON.stringify(result));const text=result.content.find(c=>c.type==='text')?.text;let value;try{value=JSON.parse(text);}catch{value=text;}assert.notEqual(value?.ok,false,JSON.stringify(value));return value;}
+try{for(const format of ['PSD','PNG','JPEG']){
+ await call('photoshop_create_document',{width:16,height:16,colorMode:'RGB',resolution:72});const state=await call('photoshop_get_state',{document_id:null});id=state.document.id;
+ await call('photoshop_adjust_brightness_contrast',{brightness:5,contrast:1,document_id:id});
+ const exported=await call('photoshop_export_as',{path:path.join(directory,format+'-copy.png'),format:'PNG',document_id:id});assert.equal(exported.dirty,true);
+ const output=path.join(directory,'saved.'+format.toLowerCase());const saved=await call('photoshop_save_document',{path:output,format,document_id:id});assert.equal(saved.dirty,false);assert.equal(saved.closed,false);assert.ok((await stat(saved.path)).size>0);
+ const after=await call('photoshop_get_state',{document_id:id});assert.equal(after.document.saved,true);
+ await call('photoshop_adjust_brightness_contrast',{brightness:1,contrast:0,document_id:id});
+ const closed=await call('photoshop_save_document',{path:output,format,document_id:id,close_after_save:true});assert.equal(closed.closed,true);assert.equal(closed.dirty,false);id=null;console.log(format,'export dirty:true; save dirty:false; independent state saved:true; save+close passed');
+}}finally{if(id)await client.callTool({name:'photoshop_close_document',arguments:{save:false,document_id:id}});await client.close();console.log('WARN/ERROR',logs.split('\n').filter(line=>/WARN|ERROR/.test(line)).join('\n'));}
