@@ -1,6 +1,6 @@
 # dsh-photoshop-mcp
 
-让 DSH 按需加载 Photoshop 工具，并管理 Photoshop 的启动、文档操作和退出。包内复用固定版本的 `@alisaitteke/photoshop-mcp@1.7.37`，额外提供安全退出工具。当前版本为 `0.0.2`。
+让 DSH 按需加载 Photoshop 工具，并管理 Photoshop 的启动、文档操作和退出。包内复用固定版本的 `@alisaitteke/photoshop-mcp@1.7.37`，额外提供安全退出工具。当前版本为 `0.0.3`。
 
 ## 致谢与上游贡献
 
@@ -12,7 +12,7 @@
 
 需要 Node.js 22 或更新版本、DSH `>=0.2.1-rc.3 <0.3.0`，以及已经安装、激活的 Photoshop。Windows 通过 COM / ExtendScript 执行操作；macOS 使用 AppleScript。Linux 不支持 Photoshop。
 
-在 DSH 中用 `plugin_manager` 的 `install_bundle` 安装 `dsh-photoshop-mcp@0.0.2`；开发时也可以安装本仓库的绝对路径。无需另配 MCP 命令。插件会启动本地 MCP 子进程，连接本身不会启动 Photoshop。不要直接修改 DSH profile 配置。
+在 DSH 中用 `plugin_manager` 的 `install_bundle` 安装 `dsh-photoshop-mcp@0.0.3`；开发时也可以安装本仓库的绝对路径。无需另配 MCP 命令。插件会启动本地 MCP 子进程，连接本身不会启动 Photoshop。不要直接修改 DSH profile 配置。
 
 开发环境安装依赖可用：
 
@@ -68,12 +68,7 @@ npm test
 
 仓库提供 [white-background-to-alpha](skills/white-background-to-alpha/SKILL.md) 技能，用于图标、贴纸或圆角方图的外侧白底处理。技能区分 Photoshop 原生移除背景与经过授权的离线 PNG 处理，说明如何保留内部白色图案、检查四角 alpha 和深色背景上的白边。附带脚本只清除与种子相连的近白区域，不做主体识别，也不自动修复抗锯齿边缘。
 
-技能按需读取，不增加 Photoshop 初始工具数量，也不改变工具懒加载。技能源码随仓库提供，当前 npm 包不包含 `skills/`；安装插件不会自动安装技能。将 `skills/white-background-to-alpha` 复制或链接到 DSH 用户目录的 `skills/white-background-to-alpha`，随后在新会话的技能目录确认名称。Windows 可在 PowerShell 中创建目录联接（目标不存在时执行；将仓库路径换成自己的路径）：
-
-```powershell
-New-Item -ItemType Directory -Force "$HOME/.dsh/skills" | Out-Null
-New-Item -ItemType Junction -Path "$HOME/.dsh/skills/white-background-to-alpha" -Target "C:/path/to/dsh-photoshop-mcp/skills/white-background-to-alpha"
-```
+从 0.0.3 起，技能随插件注册和撤销，无需复制或链接到用户技能根。技能仍按需读取，不增加 Photoshop 初始工具数量，也不改变工具懒加载。
 
 脚本依赖已有的 Pillow，不会自动安装依赖。回归测试可用已安装 Pillow 的 Python 执行：
 
@@ -111,4 +106,4 @@ Windows Photoshop 2026 是当前实测平台；macOS 分支需要在 Mac 上验�
 - [photoshop-safe-workflow](skills/photoshop-safe-workflow/SKILL.md)：文档、导出、弹窗与恢复。
 - [white-background-to-alpha](skills/white-background-to-alpha/SKILL.md)：去白底与边缘验收。
 
-这些技能需单独复制或链接到 `$DSH_HOME/skills/<技能名>`（缺省 `~/.dsh/skills`）；安装 MCP 插件不会安装它们。目录联接保留单一源，移动仓库后需重建。安装后在新会话确认发现，并用 `skill` 加载。跨技能引用需同时安装对应技能。
+这些技能随 npm 包分发，由插件启用时注册，禁用或卸载时撤销；正文仍按需加载，资源路径指向包内目录。无需另建用户级副本或目录联接。旧版已有的同名本地入口应核对来源后移到技能扫描范围之外备份，不删除技能正文。独立用户技能不会被插件改写或删除；同名条目遵循宿主优先级，禁用插件后用户条目仍可使用。跨插件技能引用需要启用对应插件。

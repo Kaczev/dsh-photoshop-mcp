@@ -31,3 +31,6 @@
 
 - [photoshop-safe-workflow](skills/photoshop-safe-workflow/SKILL.md)：文档、导出、弹窗与恢复。
 - [white-background-to-alpha](skills/white-background-to-alpha/SKILL.md)：去白底与边缘验收。
+
+- [lib/packaged-skills.mjs](lib/packaged-skills.mjs)：随包技能解析、注册与卸载清理；[回归测试](test/packaged-skills.test.mjs)。
+- [docs/release-v0.0.3.md](docs/release-v0.0.3.md)：随包技能归属、迁移与本次验证范围。

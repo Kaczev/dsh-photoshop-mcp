@@ -1,17 +1,60 @@
 {
   "name": "dsh-photoshop-mcp",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Photoshop tools for DSH with per-agent lazy loading and safe application lifecycle management.",
   "type": "module",
   "license": "MIT",
-  "repository": { "type": "git", "url": "git+https://github.com/Kaczev/dsh-photoshop-mcp.git" },
-  "engines": { "node": ">=22", "dsh": ">=0.2.1-rc.3 <0.3.0" },
-  "exports": { ".": "./index.mjs", "./package.json": "./package.json", "./icon": "./assets/icon.png", "./locale/*.json": "./locale/*.json" },
-  "files": ["index.mjs", "lib", "server", "assets/icon.png", "locale", "cordis.patch.yml", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
-  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
-  "scripts": { "check": "node --check index.mjs && node --check lib/lazy-tools.mjs && node --check server/index.mjs && node --check server/lifecycle.mjs && node --check server/dialogs.mjs && node --check server/coordinator.mjs && node --check server/files.mjs && node --check server/editing.mjs && node --check server/workflows.mjs && node --check lib/compact-tools.mjs", "test": "node --test test/*.test.mjs", "build": "npm run check", "pack:check": "npm pack --dry-run --json" },
-  "dependencies": { "@alisaitteke/photoshop-mcp": "1.7.37" },
-  "peerDependencies": { "@deepseek-ai/dsh-mcp-client": "0.2.1-rc.3", "@deepseek-ai/schemastery": "~3.18.5" },
-  "devDependencies": { "@deepseek-ai/cordis": "^4.0.5", "@deepseek-ai/dsh-scope": "^0.2.1-rc.3", "@deepseek-ai/dsh-tools": "^0.2.1-rc.3" },
-  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kaczev/dsh-photoshop-mcp.git"
+  },
+  "engines": {
+    "node": ">=22",
+    "dsh": ">=0.2.1-rc.3 <0.3.0"
+  },
+  "exports": {
+    ".": "./index.mjs",
+    "./package.json": "./package.json",
+    "./icon": "./assets/icon.png",
+    "./locale/*.json": "./locale/*.json"
+  },
+  "files": [
+    "skills",
+    "index.mjs",
+    "lib",
+    "server",
+    "assets/icon.png",
+    "locale",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "check": "node --check index.mjs && node --check lib/lazy-tools.mjs && node --check server/index.mjs && node --check server/lifecycle.mjs && node --check server/dialogs.mjs && node --check server/coordinator.mjs && node --check server/files.mjs && node --check server/editing.mjs && node --check server/workflows.mjs && node --check lib/compact-tools.mjs && node --check lib/packaged-skills.mjs",
+    "test": "node --test test/*.test.mjs",
+    "build": "npm run check",
+    "pack:check": "npm pack --dry-run --json"
+  },
+  "dependencies": {
+    "@alisaitteke/photoshop-mcp": "1.7.37"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-mcp-client": "0.2.1-rc.3",
+    "@deepseek-ai/schemastery": "~3.18.5"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "^4.0.5",
+    "@deepseek-ai/dsh-scope": "^0.2.1-rc.3",
+    "@deepseek-ai/dsh-tools": "^0.2.1-rc.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }
