@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import { lifecycleDefinition, quitScript } from '../server/lifecycle.mjs';
+test('status never auto-launches when closed',async()=>{let called=false;const d=lifecycleDefinition({executeScript(){called=true;}},async()=>false);const r=await d.handler({action:'status'});assert.equal(called,false);assert.equal(JSON.parse(r.content[0].text).running,false);});
+test('quit refuses every dirty document before closing any',()=>{let closed=0,quit=false;const doc={id:1,name:'User work',saved:false,close(){closed++;}};const app={documents:[doc],activeDocument:doc,quit(){quit=true;}};const r=vm.runInNewContext('(function(){'+quitScript(false)+'})()',{app,SaveOptions:{DONOTSAVECHANGES:2}});assert.equal(r.reason,'unsaved_documents');assert.equal(closed,0);assert.equal(quit,false);});
+test('snapshot uses native serialization across COM string boundary',async()=>{let script;const d=lifecycleDefinition({executeScript:async s=>{script=s;return {documents:[]};}},async()=>true);await d.handler({action:'status'});assert.match(script,/\.toSource\(\)$/);});
+test('safe quit invokes OS shutdown only after document preflight',async()=>{let active=true,quits=0;const d=lifecycleDefinition({executeScript:async()=>({readyToQuit:true})},async()=>active,async()=>{quits++;active=false;});const r=JSON.parse((await d.handler({action:'quit'})).content[0].text);assert.equal(quits,1);assert.equal(r.running,false);assert.equal(r.result.closed,true);});
+test('dirty refusal never invokes OS shutdown',async()=>{let quits=0;const d=lifecycleDefinition({executeScript:async()=>({closed:false,reason:'unsaved_documents'})},async()=>true,async()=>{quits++;});const r=JSON.parse((await d.handler({action:'quit'})).content[0].text);assert.equal(quits,0);assert.equal(r.result.reason,'unsaved_documents');});
