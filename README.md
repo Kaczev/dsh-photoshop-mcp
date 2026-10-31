@@ -105,3 +105,10 @@ npm run pack:check
 Windows Photoshop 2026 是当前实测平台；macOS 分支需要在 Mac 上验证。上游不是全部工具都经过本包逐项实测，尤其生成式和神经滤镜不在无消费自测范围内。
 
 开发入口见仓库中的 [INDEX.md](https://github.com/Kaczev/dsh-photoshop-mcp/blob/main/INDEX.md)。图标由 Krea 2 Turbo 生成，资源说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+## 按需技能目录
+
+- [photoshop-safe-workflow](skills/photoshop-safe-workflow/SKILL.md)：文档、导出、弹窗与恢复。
+- [white-background-to-alpha](skills/white-background-to-alpha/SKILL.md)：去白底与边缘验收。
+
+这些技能需单独复制或链接到 `$DSH_HOME/skills/<技能名>`（缺省 `~/.dsh/skills`）；安装 MCP 插件不会安装它们。目录联接保留单一源，移动仓库后需重建。安装后在新会话确认发现，并用 `skill` 加载。跨技能引用需同时安装对应技能。

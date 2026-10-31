@@ -28,3 +28,6 @@
 - [scripts/live-test.mjs](scripts/live-test.mjs): real Photoshop editing, preview, saving and exit tests.
 - [docs/design/icon-preview.html](docs/design/icon-preview.html): editable icon appearance reference.
 - [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md): dependency and generated artwork attribution.
+
+- [photoshop-safe-workflow](skills/photoshop-safe-workflow/SKILL.md)：文档、导出、弹窗与恢复。
+- [white-background-to-alpha](skills/white-background-to-alpha/SKILL.md)：去白底与边缘验收。
