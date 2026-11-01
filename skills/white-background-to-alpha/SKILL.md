@@ -1,56 +1,56 @@
 ---
 name: white-background-to-alpha
-description: 将图标、贴纸或圆角方图外侧的纯白底转为透明，保留内部白色图案；用于去白底、四角透明、白边检查及 Photoshop 移除背景失败后的诊断。
+description: Make the outer white background of icons, stickers or rounded-square images transparent while preserving interior whites; use for white-background removal, transparent corners, white-fringe checks and diagnosis after Photoshop background removal fails.
 ---
 
-# 去掉图标外侧白底
+# Remove an icon's outer white background
 
-适用于主体轮廓清楚、外侧背景近乎纯白的位图。先区分外侧白底与主体里的白色星星、文字、高光；不能按“全图白色”直接删除。
+Use for bitmaps with a clear subject outline and an almost pure-white outer background. Distinguish the outer background from white stars, lettering and highlights inside the subject. Do not delete white across the entire image.
 
-通用文档生命周期见 [安全文档操作](../photoshop-safe-workflow/SKILL.md)，本技能只负责去底和透明验收。
+For the general document lifecycle, read [Safe document operations](../photoshop-safe-workflow/SKILL.md). This skill covers background removal and transparency acceptance only.
 
-## 先选操作路径
+## Choose the operation path first
 
-- **用户要求在 Photoshop 抠图或移除背景**：走下面的 Photoshop 路径。
-- **用户明确要求离线处理 PNG 像素，或已经同意文件级处理**：可运行附带的连通区域脚本。脚本不操作 Photoshop，不做主体识别。
-- 白色主体与白底相连、头发、玻璃、柔软阴影、渐变底、JPEG 压缩噪声：需要人工蒙版或另行授权的分割方案。仅凭颜色和连通性无法恢复被白底覆盖的真实颜色。
+- **The user requests cutout or background removal in Photoshop**: use the Photoshop path below.
+- **The user explicitly requests offline PNG pixel processing, or has agreed to file-level processing**: the bundled connected-region script may be used. It neither operates Photoshop nor recognizes subjects.
+- White subjects connected to white backgrounds, hair, glass, soft shadows, gradient backgrounds and JPEG compression noise require manual masks or a separately authorized segmentation method. Color and connectivity alone cannot recover true colors hidden by a white background.
 
-输入先留副本，输出使用新的 PNG 路径。读取原图确认尺寸、alpha 与边界像素；白底预览无法证明图片透明。
+Keep an input copy and write to a new PNG path. Read the original to check dimensions, alpha and boundary pixels. A white preview cannot prove transparency.
 
-## Photoshop 路径
+## Photoshop path
 
-遵守当前 Photoshop MCP 的规则：读取一次 `photoshop_get_state`，固定目标 `document_id`，调用一次 `photoshop_recipe_remove_background`，再调用一次 `photoshop_get_preview`，然后停止。多文档或目标不明时先澄清目标，不猜活动标签。
+Follow the current Photoshop MCP rules: read `photoshop_get_state` once, pin the target `document_id`, call `photoshop_recipe_remove_background` once, call `photoshop_get_preview` once, then stop. Clarify the target if multiple documents are open or identity is uncertain; do not guess from the active tab.
 
-若返回错误，报告原始错误 envelope；不要改用栅格化、复制层、魔棒、脚本、主体选择、生成式移除等方式绕过。超时不代表操作已取消；按工具恢复约定检查弹窗、恢复探针和状态，不能立即重试。出现“找不到要移去的背景”时，只说明自动识别失败，不能宣称背景已移除。
+On error, report the original error envelope. Do not bypass the failure through rasterization, layer duplication, magic wand, scripts, subject selection, generative removal or another route. A timeout does not mean cancellation. Check dialogs, recovery probes and state under the tool's recovery contract; do not retry immediately. The error “找不到要移去的背景” (cannot find a background to remove) establishes only that automatic detection failed, not that the background was removed.
 
-同一轮失败后不自动切换到离线脚本。需要用户另外同意文件级处理。成功后的保存与导出也要遵守当前工具的停止边界及用户授权，不能因导出成功就关闭未保存源文档。
+Do not automatically switch to the offline script after a failure in the same attempt. Obtain separate user agreement to file-level processing. Saving and exporting after success must also respect the current tool's stop boundary and user authorization. A successful export does not authorize closing an unsaved source document.
 
-## 离线纯白底路径
+## Offline pure-white-background path
 
-先读取附带的 [脚本](scripts/white_to_alpha.py)，确认运行环境已有 Pillow；优先用 DSH `load_workspace_dependencies` 返回的 Python。缺依赖就报告，不自动安装。命令中的路径按本次任务替换，不把本机绝对路径写进共享技能。
+Read the bundled [script](scripts/white_to_alpha.py) first and confirm that Pillow is already available. Prefer the Python returned by DSH `load_workspace_dependencies`. Report missing dependencies; do not install automatically. Substitute paths for the current task rather than putting local absolute paths into a shared skill.
 
 ```sh
 python scripts/white_to_alpha.py input.png output.png
 ```
 
-默认只从四角向内扩展，删除满足 `min(R,G,B) >= 245` 且 `max(R,G,B)-min(R,G,B) <= 12` 的不透明像素；使用四邻域，保留不连通的内部白色。已有 alpha 为 0 的像素可作为通路，但已有半透明像素不再处理。
+By default, the script expands inward from the four corners only, removing opaque pixels that satisfy `min(R,G,B) >= 245` and `max(R,G,B)-min(R,G,B) <= 12`. It uses four-neighbor connectivity and preserves disconnected interior whites. Existing pixels with alpha 0 can provide a path; existing semitransparent pixels are left untouched.
 
-只有确认整个边界都属于背景，才用 `--seeds boundary`。主体触边时，边界种子可能删除主体。脚本输出 JSON，记录删除像素数和四角 alpha；未找到可删除区域或输出已存在会报错，且不覆盖原图。
+Use `--seeds boundary` only after confirming that the entire boundary is background. Boundary seeds may remove a subject touching an edge. The script reports removed-pixel counts and corner alpha in JSON. It errors if no removable region is found or the output already exists, and never overwrites the input.
 
-偏灰底可在检查像素后显式调整 `--white-min` 与 `--neutral-tolerance`。默认值只是保守起点；不能把上次深色图标用过的 180 当通用阈值。提高容差或降低白度门槛都会扩大误删范围。
+For grayish backgrounds, inspect pixels before explicitly adjusting `--white-min` and `--neutral-tolerance`. Defaults are conservative starting points. Do not generalize the threshold 180 from a previous dark icon. Increasing tolerance or lowering the whiteness threshold increases the risk of deleting subject pixels.
 
-脚本只清除硬白底，不估计抗锯齿 alpha、不去白色杂边、不缩放图片。输出尺寸与已有非背景像素保持不变。先完成去底，再另行缩放，避免先缩放把白底混进主体边缘。
+The script removes only a hard white background. It does not estimate antialiasing alpha, remove white fringes or resize. Output dimensions and existing non-background pixels remain unchanged. Remove the background before resizing separately, so resampling does not blend the white background into subject edges.
 
-## 验收透明与边缘
+## Verify transparency and edges
 
-1. 用文件解码器检查 RGBA 和 alpha 的最小值；应删除的四角 alpha 必须为 0。全透明区域 RGB 是什么颜色不影响透明度。
-2. 对照原图，检查内部白色星星、文字和高光，以及细线、阴影是否保留。连通算法不理解主体，不能靠像素统计代替目视。
-3. 在深灰、白色与高饱和彩色背景分别合成查看，再看目标尺寸和放大边缘。白底上看不出的白圈，在深底上可能很明显。
-4. 若仍有白边，保留原图和蒙版，说明硬阈值处理的局限。不要继续扩大删除区域或对整张图“白色转透明”。需要可控蒙版及明确的边缘处理授权。
+1. Use a file decoder to inspect RGBA and minimum alpha. Corners that should be removed must have alpha 0. RGB values in fully transparent areas do not affect transparency.
+2. Compare with the original and inspect interior white stars, text and highlights, as well as fine lines and shadows. Connectivity does not recognize the subject; pixel statistics cannot replace visual inspection.
+3. Composite on dark gray, white and highly saturated colored backgrounds. Inspect at the target size and with enlarged edges. A white ring invisible on white may be obvious on dark gray.
+4. If a white fringe remains, preserve the original and mask and explain the limits of hard thresholds. Do not keep expanding the deletion region or turn white transparent across the whole image. Further work needs a controllable mask and explicit authorization for edge treatment.
 
-边缘合成满足 `C = alpha * F + (1-alpha) * B`。白底 `B` 已知时，仍有前景色 `F` 和 alpha 两个未知量；直接令 alpha 等于 `1-min(R,G,B)/255` 会把白色主体也变透明。去白边必须依赖可靠蒙版或额外前景假设，不能承诺无损恢复。
+Edge compositing follows `C = alpha * F + (1-alpha) * B`. Even with the white background `B` known, foreground color `F` and alpha remain two unknowns. Setting alpha directly to `1-min(R,G,B)/255` also makes white subjects transparent. Defringing requires a reliable mask or additional foreground assumptions; do not promise lossless recovery.
 
-自动回归测试见 [测试脚本](scripts/test_white_to_alpha.py)，执行：
+For automated regression checks, see the [test script](scripts/test_white_to_alpha.py) and run:
 
 ```sh
 python -m unittest discover -s scripts -p 'test_white_to_alpha.py'

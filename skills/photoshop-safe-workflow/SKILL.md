@@ -1,28 +1,28 @@
 ---
 name: photoshop-safe-workflow
-description: 使用 Photoshop MCP 编辑、导出或关闭文档时使用；固定文档目标，区分源保存与导出，安全处理超时及弹窗。
+description: Use when editing, exporting or closing documents through Photoshop MCP; pin document identity, distinguish source saves from exports, and handle timeouts and dialogs safely.
 ---
 
-# Photoshop 文档操作与交付
+# Photoshop document operations and delivery
 
-读当前工具契约和文档状态，固定 document_id；活动标签或同名文件不代替目标身份。打开同路径文件前检查内存修改，磁盘重载不是无损刷新。
+Read the current tool contract and document state, then pin document_id. An active tab or same-named file does not establish target identity. Check in-memory changes before opening the same path; reloading from disk is not a lossless refresh.
 
-## 编辑与导出
+## Editing and export
 
-保留可编辑源与必要副本，确认图层、选区、背景层、色彩模式、画布和描边边界。批处理先核验全部参数和目标，设置有界预算；失败查部分结果，不假定事务回滚。
+Preserve editable sources and necessary copies. Confirm layers, selections, background layers, color mode, canvas and stroke bounds. Before a batch, validate all parameters and targets and set a bounded budget. On failure, inspect partial results rather than assuming transactional rollback.
 
-保存源文档与导出 PNG／JPEG 是不同操作。导出成功不证明源已保存。核对实际路径、dirty 状态、文件可解码性、尺寸、alpha 和目标显示效果。磁盘取色不反映未保存内容，说明测量来源。
+Saving the source document and exporting PNG/JPEG are separate operations. A successful export does not prove that the source was saved. Check the actual path, dirty state, decodability, dimensions, alpha and appearance in the target context. Disk color sampling excludes unsaved content; state the measurement source.
 
-去白底读 [白底转透明](../white-background-to-alpha/SKILL.md)，保护内部白色；不重复放宽阈值掩盖失败。不在自动方案失败后擅自改走破坏性路径。
+For white-background removal, read [White background to alpha](../white-background-to-alpha/SKILL.md) and preserve interior whites. Do not repeatedly relax thresholds to hide failure or switch to a destructive route without authorization after automatic removal fails.
 
-## 超时与弹窗
+## Timeouts and dialogs
 
-超时不证明应用脚本取消。先看应用和独立模态诊断，等待原操作结束或按工具约定恢复；执行最小脚本探针后再读文档。进程存活不证明队列可用。
+A timeout does not prove that the application script was cancelled. Inspect application state and independent modal diagnostics first. Wait for the original operation or recover under the tool contract; run a minimal script probe before reading the document. A live process does not prove queue availability.
 
-只确认内容、进程、动作均明确且获授权的已知错误框；保存、覆盖、登录和未知窗口不自动点击。关闭错误框不证明原操作成功，不立即重放写操作。
+Acknowledge only known error dialogs whose content, owning process and action are clear and authorized. Do not automatically click save, overwrite, login or unknown windows. Closing an error dialog does not prove that the original operation succeeded; do not immediately replay writes.
 
-## 收尾
+## Finish safely
 
-确认源已保存再关闭；导出后仍 dirty 就保留源。批量关闭限明确文档集合，临时自检只清理自己的文档。未授权不丢弃、不强杀、不触发付费生成。
+Confirm that the source is saved before closing it. Retain the source if it remains dirty after export. Limit batch closing to an explicit document set, and clean up only your own documents after temporary self-tests. Do not discard changes, force-kill the application or trigger paid generation without authorization.
 
-例：透明图标检查 PNG alpha 和深底边缘，另存 PSD 保留结构；PNG 写出但源仍 dirty 时不能宣称可安全退出。
+For example, check a transparent icon's PNG alpha and edges on a dark background, and save a separate PSD to preserve structure. If the PNG was written but the source is still dirty, do not claim that quitting is safe.

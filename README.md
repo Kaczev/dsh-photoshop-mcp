@@ -1,6 +1,6 @@
 # dsh-photoshop-mcp
 
-让 DSH 按需加载 Photoshop 工具，并管理 Photoshop 的启动、文档操作和退出。包内复用固定版本的 `@alisaitteke/photoshop-mcp@1.7.37`，额外提供安全退出工具。当前版本为 `0.0.3`。
+让 DSH 按需加载 Photoshop 工具，并管理 Photoshop 的启动、文档操作和退出。包内复用固定版本的 `@alisaitteke/photoshop-mcp@1.7.37`，额外提供安全退出工具。当前版本为 `0.0.4`。
 
 ## 致谢与上游贡献
 
@@ -12,7 +12,7 @@
 
 需要 Node.js 22 或更新版本、DSH `>=0.2.1-rc.3 <0.3.0`，以及已经安装、激活的 Photoshop。Windows 通过 COM / ExtendScript 执行操作；macOS 使用 AppleScript。Linux 不支持 Photoshop。
 
-在 DSH 中用 `plugin_manager` 的 `install_bundle` 安装 `dsh-photoshop-mcp@0.0.3`；开发时也可以安装本仓库的绝对路径。无需另配 MCP 命令。插件会启动本地 MCP 子进程，连接本身不会启动 Photoshop。不要直接修改 DSH profile 配置。
+在 DSH 中用 `plugin_manager` 的 `install_bundle` 安装 `dsh-photoshop-mcp@0.0.4`；开发时也可以安装本仓库的绝对路径。无需另配 MCP 命令。插件会启动本地 MCP 子进程，连接本身不会启动 Photoshop。不要直接修改 DSH profile 配置。
 
 开发环境安装依赖可用：
 
