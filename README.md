@@ -1,18 +1,18 @@
 # dsh-photoshop-mcp
 
-让 DSH 按需加载 Photoshop 工具，并管理 Photoshop 的启动、文档操作和退出。包内复用固定版本的 `@alisaitteke/photoshop-mcp@1.7.37`，额外提供安全退出工具。当前版本为 `0.0.4`。
+让 DSH 按需加载 Photoshop 工具，并管理 Photoshop 的启动、文档操作和退出。包内复用固定版本的 `@alisaitteke/photoshop-mcp@1.7.38`，额外提供安全退出工具。当前版本为 `0.0.5`。
 
 ## 致谢与上游贡献
 
 本项目建立在 **Ali Sait Teke 及贡献者开发的 [Photoshop MCP](https://github.com/alisaitteke/photoshop-mcp)** 之上。Photoshop 自动化连接、ExtendScript 操作、大部分原子工具和配方都来自上游；没有这些工作，本包无法提供目前的 Photoshop 操作能力。感谢上游作者和贡献者持续开发、维护并以 MIT 许可开放源码。
 
-`dsh-photoshop-mcp` 负责 DSH 插件接入、按 Agent 懒加载、工具入口合并，以及文档生命周期、保存状态和阻塞恢复等适配。它不是从零实现的独立 Photoshop 自动化引擎。当前固定依赖 `@alisaitteke/photoshop-mcp@1.7.37`，未直接修改安装后的上游文件；许可与版权声明见 [第三方声明](THIRD_PARTY_NOTICES.md)。欢迎访问上游仓库、支持作者，并将适用于上游的问题或改进反馈给原项目。
+`dsh-photoshop-mcp` 负责 DSH 插件接入、按 Agent 懒加载、工具入口合并，以及文档生命周期、保存状态和阻塞恢复等适配。它不是从零实现的独立 Photoshop 自动化引擎。当前固定依赖 `@alisaitteke/photoshop-mcp@1.7.38`，未直接修改安装后的上游文件；许可与版权声明见 [第三方声明](THIRD_PARTY_NOTICES.md)。欢迎访问上游仓库、支持作者，并将适用于上游的问题或改进反馈给原项目。
 
 ## 安装到 DSH
 
 需要 Node.js 22 或更新版本、DSH `>=0.2.1-rc.3 <0.3.0`，以及已经安装、激活的 Photoshop。Windows 通过 COM / ExtendScript 执行操作；macOS 使用 AppleScript。Linux 不支持 Photoshop。
 
-在 DSH 中用 `plugin_manager` 的 `install_bundle` 安装 `dsh-photoshop-mcp@0.0.4`；开发时也可以安装本仓库的绝对路径。无需另配 MCP 命令。插件会启动本地 MCP 子进程，连接本身不会启动 Photoshop。不要直接修改 DSH profile 配置。
+在 DSH 中用 `plugin_manager` 的 `install_bundle` 安装 `dsh-photoshop-mcp@0.0.5`；开发时也可以安装本仓库的绝对路径。无需另配 MCP 命令。插件会启动本地 MCP 子进程，连接本身不会启动 Photoshop。不要直接修改 DSH profile 配置。
 
 开发环境安装依赖可用：
 

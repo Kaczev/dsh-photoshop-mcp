@@ -2,7 +2,7 @@
 
 ## Photoshop MCP
 
-This package depends on `@alisaitteke/photoshop-mcp` version 1.7.37, by Ali Sait Teke, under the MIT License. The dependency ships its own license. This adapter does not modify the installed upstream files.
+This package depends on `@alisaitteke/photoshop-mcp` version 1.7.38, by Ali Sait Teke, under the MIT License. The dependency ships its own license. This adapter does not modify the installed upstream files.
 
 Source: https://github.com/alisaitteke/photoshop-mcp
 

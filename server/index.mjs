@@ -4,7 +4,7 @@ process.env.PSMCP_FEEDBACK = '0';
 process.env.PSMCP_UPDATE_CHECK = '0';
 const { PhotoshopMCPServer } = await import('@alisaitteke/photoshop-mcp/dist/core/server.js');
 const { lifecycleDefinition } = await import('./lifecycle.mjs');
-const server = new PhotoshopMCPServer({serverVersion:'1.7.37+dsh.0.0.2'});
+const server = new PhotoshopMCPServer({serverVersion:'1.7.38+dsh.0.0.2'});
 const connection = server.session.getConnection();
 const definition = lifecycleDefinition(connection);
 server.toolRegistry.register(definition.tool.name, definition);
