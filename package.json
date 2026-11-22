@@ -1,6 +1,6 @@
 {
   "name": "dsh-photoshop-mcp",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Photoshop tools for DSH with per-agent lazy loading and safe application lifecycle management.",
   "type": "module",
   "license": "MIT",
@@ -10,7 +10,7 @@
   },
   "engines": {
     "node": ">=22",
-    "dsh": ">=0.2.1-rc.3 <0.3.0"
+    "dsh": ">=0.2.2-rc.5 <0.3.0"
   },
   "exports": {
     ".": "./index.mjs",
@@ -19,7 +19,9 @@
     "./locale/*.json": "./locale/*.json"
   },
   "files": [
-    "skills",
+    "skills/photoshop",
+    "skills/white-background-to-alpha/SKILL.md",
+    "skills/white-background-to-alpha/scripts/*.py",
     "index.mjs",
     "lib",
     "server",

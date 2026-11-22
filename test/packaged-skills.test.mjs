@@ -9,7 +9,7 @@ const directory = new URL('../skills/', import.meta.url);
 
 test('all packaged skills retain metadata, body and resolvable resource bases', () => {
   const skills = readPackagedSkills(directory);
-  assert.deepEqual(skills.map(s => s.name), ['photoshop-safe-workflow', 'white-background-to-alpha']);
+  assert.deepEqual(skills.map(s => s.name), ['photoshop']);
   for (const skill of skills) {
     assert.equal(skill.source, 'runtime');
     assert.deepEqual(skill.invocation, { modelInvocable: true, userInvocable: true });
@@ -23,12 +23,12 @@ test('all packaged skills retain metadata, body and resolvable resource bases', 
 });
 
 test('effects dispose exactly their own registrations and permit repeated enable', () => {
-  const user = { name: 'photoshop-safe-workflow', source: 'user-dsh', content: 'keep user skill' };
+  const user = { name: 'photoshop', source: 'user-dsh', content: 'keep user skill' };
   const rows = [user], effects = [];
   const ctx = { skills: { register(skill) { rows.push(skill); return () => { const i = rows.indexOf(skill); if (i >= 0) rows.splice(i, 1); }; } }, effect(create) { effects.push(create()); } };
   for (let i = 0; i < 3; i++) {
     installPackagedSkills(ctx, directory);
-    assert.equal(rows.length, 3);
+    assert.equal(rows.length, 2);
     while (effects.length) effects.pop()();
     assert.deepEqual(rows, [user]);
   }

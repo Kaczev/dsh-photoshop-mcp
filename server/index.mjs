@@ -5,6 +5,10 @@ process.env.PSMCP_UPDATE_CHECK = '0';
 const { PhotoshopMCPServer } = await import('@alisaitteke/photoshop-mcp/dist/core/server.js');
 const { lifecycleDefinition } = await import('./lifecycle.mjs');
 const server = new PhotoshopMCPServer({serverVersion:'1.7.38+dsh.0.0.2'});
+// Upstream 1.7.38 supplies no constructor option for its initialize instructions.
+// Fail visibly on SDK drift instead of silently injecting the upstream manual.
+if (typeof server.server?._instructions !== 'string') throw new Error('Unsupported Photoshop MCP instructions adapter');
+server.server._instructions = undefined;
 const connection = server.session.getConnection();
 const definition = lifecycleDefinition(connection);
 server.toolRegistry.register(definition.tool.name, definition);

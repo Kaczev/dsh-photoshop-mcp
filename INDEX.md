@@ -1,12 +1,13 @@
 # Source navigation
 
-- [skills/white-background-to-alpha/SKILL.md](skills/white-background-to-alpha/SKILL.md): Photoshop 去底约束、离线连通白底处理与透明验收；内链脚本和回归测试。
+- [Photoshop 主技能](skills/photoshop/SKILL.md)：默认工具、配方、目标文档、保存与错误恢复。
+- [离线白底 PNG 参考](skills/white-background-to-alpha/SKILL.md)：仅用于另行授权的像素处理；内链脚本和回归测试，不注册为技能。
 - [docs/release-v0.0.2.md](docs/release-v0.0.2.md): 0.0.2 release changes, verified scenarios and platform limits.
 - [README.md](README.md): installation, tool use and safety limits.
 - [index.mjs](index.mjs): Cordis configuration and MCP process wiring.
 - [lib/compact-tools.mjs](lib/compact-tools.mjs): related-operation families with exact parameter branches.
 - [test/compact.test.mjs](test/compact.test.mjs): dispatch context and renderer preservation.
-- [lib/lazy-tools.mjs](lib/lazy-tools.mjs): per-agent tool groups, masks, reconnect and disposal.
+- [lib/lazy-tools.mjs](lib/lazy-tools.mjs): private backend registry, per-agent skill admission, groups and reconnect.
 - [server/index.mjs](server/index.mjs): pinned upstream server adapter and shutdown.
 - [server/coordinator.mjs](server/coordinator.mjs): bounded waits, late-completion tracking and probe recovery.
 - [server/files.mjs](server/files.mjs): canonical open reuse and output-directory preflight.
@@ -21,7 +22,7 @@
 - [test/dialogs.test.mjs](test/dialogs.test.mjs): allowlist, refusal and blocked-call regression.
 - [scripts/dialog-live-test.mjs](scripts/dialog-live-test.mjs): controlled Photoshop modal and queue recovery verification.
 - [server/lifecycle.mjs](server/lifecycle.mjs): non-launching status, startup and guarded application exit.
-- [test/runtime.test.mjs](test/runtime.test.mjs): real Cordis scope isolation and reconnection tests.
+- [test/runtime.test.mjs](test/runtime.test.mjs): skill admission, parent/child isolation, reconnection, group reset and bridge isolation tests.
 - [test/metadata.test.mjs](test/metadata.test.mjs): PNG dimensions and DSH icon byte-limit regression.
 - [test/lifecycle.test.mjs](test/lifecycle.test.mjs): application safety regression tests.
 - [scripts/smoke.mjs](scripts/smoke.mjs): MCP protocol discovery and repeated status checks.
@@ -29,10 +30,10 @@
 - [docs/design/icon-preview.html](docs/design/icon-preview.html): editable icon appearance reference.
 - [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md): dependency and generated artwork attribution.
 
-- [photoshop-safe-workflow](skills/photoshop-safe-workflow/SKILL.md)：文档、导出、弹窗与恢复。
-- [white-background-to-alpha](skills/white-background-to-alpha/SKILL.md)：去白底与边缘验收。
+- [test/protocol.test.mjs](test/protocol.test.mjs): absent MCP initialize instructions and raw tool discovery without a Photoshop call.
 
 - [lib/packaged-skills.mjs](lib/packaged-skills.mjs)：随包技能解析、注册与卸载清理；[回归测试](test/packaged-skills.test.mjs)。
 - [docs/release-v0.0.3.md](docs/release-v0.0.3.md)：随包技能归属、迁移与本次验证范围。
 
 - [0.0.4 release notes](docs/release-v0.0.4.md): English skill documentation and verification scope.
+- [0.1.0 发布说明](docs/release-v0.1.0.md)：`photoshop` 技能准入，安全流程并入主技能。

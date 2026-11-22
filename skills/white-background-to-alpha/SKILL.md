@@ -1,31 +1,12 @@
----
-name: white-background-to-alpha
-description: Make the outer white background of icons, stickers or rounded-square images transparent while preserving interior whites; use for white-background removal, transparent corners, white-fringe checks and diagnosis after Photoshop background removal fails.
----
+Offline reference for `photoshop`. This page is not registered as a DSH skill.
 
-# Remove an icon's outer white background
+# Remove a connected near-white exterior from a PNG
 
-Use for bitmaps with a clear subject outline and an almost pure-white outer background. Distinguish the outer background from white stars, lettering and highlights inside the subject. Do not delete white across the entire image.
+Use this pixel method only when offline file processing was requested or separately agreed. For work in Photoshop, follow [the Photoshop workflow](../photoshop/SKILL.md). A failed Photoshop cutout does not authorize switching methods.
 
-For the general document lifecycle, read [Safe document operations](../photoshop-safe-workflow/SKILL.md). This skill covers background removal and transparency acceptance only.
+The script removes a contiguous exterior, not a recognized subject. Disconnected white text and highlights can survive; white parts touching the background can be lost. Hair, glass, soft shadows, gradients and compression noise are poor fits. Inspect the source dimensions, alpha and boundary pixels before using it, preserve the input and write to a new PNG.
 
-## Choose the operation path first
-
-- **The user requests cutout or background removal in Photoshop**: use the Photoshop path below.
-- **The user explicitly requests offline PNG pixel processing, or has agreed to file-level processing**: the bundled connected-region script may be used. It neither operates Photoshop nor recognizes subjects.
-- White subjects connected to white backgrounds, hair, glass, soft shadows, gradient backgrounds and JPEG compression noise require manual masks or a separately authorized segmentation method. Color and connectivity alone cannot recover true colors hidden by a white background.
-
-Keep an input copy and write to a new PNG path. Read the original to check dimensions, alpha and boundary pixels. A white preview cannot prove transparency.
-
-## Photoshop path
-
-Follow the current Photoshop MCP rules: read `photoshop_get_state` once, pin the target `document_id`, call `photoshop_recipe_remove_background` once, call `photoshop_get_preview` once, then stop. Clarify the target if multiple documents are open or identity is uncertain; do not guess from the active tab.
-
-On error, report the original error envelope. Do not bypass the failure through rasterization, layer duplication, magic wand, scripts, subject selection, generative removal or another route. A timeout does not mean cancellation. Check dialogs, recovery probes and state under the tool's recovery contract; do not retry immediately. The error “找不到要移去的背景” (cannot find a background to remove) establishes only that automatic detection failed, not that the background was removed.
-
-Do not automatically switch to the offline script after a failure in the same attempt. Obtain separate user agreement to file-level processing. Saving and exporting after success must also respect the current tool's stop boundary and user authorization. A successful export does not authorize closing an unsaved source document.
-
-## Offline pure-white-background path
+## Run the script
 
 Read the bundled [script](scripts/white_to_alpha.py) first and confirm that Pillow is already available. Prefer the Python returned by DSH `load_workspace_dependencies`. Report missing dependencies; do not install automatically. Substitute paths for the current task rather than putting local absolute paths into a shared skill.
 
