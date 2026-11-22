@@ -1,6 +1,7 @@
 # Source navigation
 
-- [Photoshop 主技能](skills/photoshop/SKILL.md)：默认工具、配方、目标文档、保存与错误恢复。
+- [Photoshop 主技能](skills/photoshop/SKILL.md)：从定位文档到编辑、核验并交付源文件或导出副本。
+- [按错误恢复](skills/photoshop/recovery.md)：遇到字体、文字图层、画板或暂存盘错误时查阅。
 - [离线白底 PNG 参考](skills/white-background-to-alpha/SKILL.md)：仅用于另行授权的像素处理；内链脚本和回归测试，不注册为技能。
 - [docs/release-v0.0.2.md](docs/release-v0.0.2.md): 0.0.2 release changes, verified scenarios and platform limits.
 - [README.md](README.md): installation, tool use and safety limits.
@@ -37,3 +38,4 @@
 
 - [0.0.4 release notes](docs/release-v0.0.4.md): English skill documentation and verification scope.
 - [0.1.0 发布说明](docs/release-v0.1.0.md)：`photoshop` 技能准入，安全流程并入主技能。
+- [0.1.1 发布说明](docs/release-v0.1.1.md)：Photoshop 技能补充定位、去背景、未知结果和交付；错误恢复另见专页。

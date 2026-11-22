@@ -1,6 +1,6 @@
 {
   "name": "dsh-photoshop-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Photoshop tools for DSH with per-agent lazy loading and safe application lifecycle management.",
   "type": "module",
   "license": "MIT",
